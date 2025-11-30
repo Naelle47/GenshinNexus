@@ -1,0 +1,44 @@
+﻿@model IEnumerable<GenshinNexus.Models.ProjectModels.Character>
+
+@{
+    ViewData["Title"] = "Characters";
+}
+
+<h2 class="mb-4">Characters</h2>
+
+<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
+
+    @foreach (var item in Model)
+    {
+        <div class="col">
+            <div class="card h-100 shadow-sm">
+
+                <!-- Icon -->
+                <img src="@item.icon_url" class="card-img-top" alt="@item.name"
+                     style="object-fit: cover; height: 200px;" />
+
+                <div class="card-body">
+                    <h5 class="card-title text-center">@item.name</h5>
+
+                    <ul class="list-unstyled small">
+                        <li><strong>Rarity:</strong> @item.rarity</li>
+                        <li><strong>Element:</strong> @(item.Element?.name ?? "N/A")</li>
+                        <li><strong>Weapon:</strong> @(item.WeaponType?.name ?? "N/A")</li>
+                        <li><strong>Region:</strong> @(item.Region?.name ?? "N/A")</li>
+                        <li><strong>Release:</strong> @item.release_date.ToString("yyyy-MM-dd")</li>
+                    </ul>
+
+                    <div class="text-center mt-3">
+                        <a asp-action="Details"
+                           asp-route-id="@item.characterid_pk"
+                           class="btn btn-primary btn-sm">
+                            View Details
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    }
+
+</div>

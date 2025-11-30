@@ -55,7 +55,7 @@ namespace GenshinNexus.Controllers
             // Création de la connexion à la base de données
             using var connection = new NpgsqlConnection(_connectionString);
             // Exécution de la requête et mappage des résultats aux objets Character, Element, WeaponType et Region
-            // Mappage multi-objet avec Dapper
+            // Mappage multi-objet avec Dapper via la méthode Query<TFirst, TSecond, TThird, TFourth, TResult>
             // On prend un objet Character et on lui associe les objets Element, WeaponType et Region récupérés
             // Pour retourner un seul objet Character avec ses propriétés de navigation correctement assignées.
             var characters = connection.Query<Character, Element, WeaponType, Region, Character>(
@@ -64,7 +64,7 @@ namespace GenshinNexus.Controllers
                 {
                     // Association des objets récupérés aux propriétés de navigation de Character
                     // Gestion des valeurs nulles pour Element et Region
-                    // Expression ternaire pour Element et Region. On vérifie si les clés étrangères ont une valeur avant d'assigner l'objet associé.
+                    // Expression ternaire pour Element et Region. On vérifie si elementid_fk et regionid_fk ont une valeur ou non avant d'assigner les objets correspondants.
                     c.Element = c.elementid_fk.HasValue ? element : null;
                     c.WeaponType = weapon;
                     c.Region = c.regionid_fk.HasValue ? region : null;

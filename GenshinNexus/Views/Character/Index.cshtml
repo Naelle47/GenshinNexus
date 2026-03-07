@@ -1,44 +1,141 @@
-﻿@model IEnumerable<GenshinNexus.Models.ProjectModels.Character>
+﻿@model GenshinNexus.Models.ViewModels.CharacterFiltersVM
 
-@{
-    ViewData["Title"] = "Characters";
-}
 
-<h2 class="mb-4">Characters</h2>
 
-<div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 g-4">
 
-    @foreach (var item in Model)
+
+
+<section class="character-filters">
+    <!-- Rareté -->
+    <div class="filter-row">
+        <div class="filter-chips">
+            <a asp-action="Index"
+               asp-route-elementId="@Model.ElementId"
+               asp-route-weaponTypeId="@Model.WeaponTypeId"
+               asp-route-regionId="@Model.RegionId"
+               class="filter-chip @(Model.Rarity is null ? "active" : "")">
+                *
+            </a>
+        </div>
+    </div>
+
+    <!-- Éléments -->
+    <div class="filter-row">
+        <div class="filter-chips">
+            <a asp-action="Index"
+               asp-route-elementId=""
+               asp-route-weaponTypeId="@Model.WeaponTypeId"
+               asp-route-regionId="@Model.RegionId"
+               class="filter-chip @(Model.ElementId is null ? "active" : "")">
+                *
+            </a>
+
+            @foreach (var e in Model.Elements)
+            {
+                <p>@e.name - @e.icon_url</p>
+
+                <a asp-action="Index"
+                   asp-route-elementId="@e.elementid_pk"
+                   asp-route-weaponTypeId="@Model.WeaponTypeId"
+                   asp-route-regionId="@Model.RegionId"
+                   class="filter-chip @(Model.ElementId == e.elementid_pk ? "active" : "")">
+
+                    <img src="@Url.Content("~"+ e.icon_url)"
+                         alt="@e.name"
+                         class="filter-icon" />
+                </a>
+            }
+        </div>
+    </div>
+
+    <!-- Types d’armes -->
+    <div class="filter-row">
+        <div class="filter-chips">
+            <a asp-action="Index"
+               asp-route-elementId="@Model.ElementId"
+               asp-route-weaponTypeId=""
+               asp-route-regionId="@Model.RegionId"
+               class="filter-chip @(Model.WeaponTypeId is null ? "active" : "")">
+                *
+            </a>
+
+            @foreach (var w in Model.WeaponTypes)
+            {
+                <a asp-action="Index"
+                   asp-route-elementId="@Model.ElementId"
+                   asp-route-weaponTypeId="@w.weapontypeid_pk"
+                   asp-route-regionId="@Model.RegionId"
+                   class="filter-chip @(Model.WeaponTypeId == w.weapontypeid_pk ? "active" : "")">
+
+                    <img src="@Url.Content("~" + w.icon_url)"
+                         alt="@w.name"
+                         class="filter-icon" />
+                </a>
+            }
+        </div>
+    </div>
+
+</section>
+
+<div class="characters-grid">
+
+    
+    @foreach (var item in Model.Characters)
     {
-        <div class="col">
-            <div class="card h-100 shadow-sm">
+        <article class="character-card">
 
-                <!-- Icon -->
-                <img src="@item.icon_url" class="card-img-top" alt="@item.name"
-                     style="object-fit: cover; height: 200px;" />
+            <img src="@Url.Content("~" + item.icon_url)"
+                 alt="@item.name"
+                 class="character-card-image" />
 
-                <div class="card-body">
-                    <h5 class="card-title text-center">@item.name</h5>
+            <div class="character-card-body">
 
-                    <ul class="list-unstyled small">
-                        <li><strong>Rarity:</strong> @item.rarity</li>
-                        <li><strong>Element:</strong> @(item.Element?.name ?? "N/A")</li>
-                        <li><strong>Weapon:</strong> @(item.WeaponType?.name ?? "N/A")</li>
-                        <li><strong>Region:</strong> @(item.Region?.name ?? "N/A")</li>
-                        <li><strong>Release:</strong> @item.release_date.ToString("yyyy-MM-dd")</li>
-                    </ul>
+                <h2 class="character-name">@item.name</h2>
 
-                    <div class="text-center mt-3">
-                        <a asp-action="Details"
-                           asp-route-id="@item.characterid_pk"
-                           class="btn btn-primary btn-sm">
-                            View Details
-                        </a>
+                <div class="character-fields">
+
+                    <div class="field-row">
+                        <span class="field-label">Rareté</span>
+                        <span class="field-value">@item.rarity★</span>
                     </div>
+
+                    <div class="field-row">
+                        <span class="field-label">Élément</span>
+                        <span class="field-value">@((item.Element?.name) ?? "N/A")</span>
+                    </div>
+
+                    <div class="field-row">
+                        <span class="field-label">Arme</span>
+                        <span class="field-value">@((item.WeaponType?.name) ?? "N/A")</span>
+                    </div>
+
+                    <div class="field-row">
+                        <span class="field-label">Région</span>
+                        <span class="field-value">@((item.Region?.name) ?? "N/A")</span>
+                    </div>
+
+                    <div class="field-row">
+                        <span class="field-label">Sortie</span>
+                        <span class="field-value">
+                            @(item.release_date == default
+                                                    ? "N/A"
+                                                    : item.release_date.ToString("dd MMM yyyy"))
+                        </span>
+                    </div>
+
+                </div>
+
+                <div class="character-card-footer">
+                    <a asp-action="Details"
+                       asp-route-id="@item.characterid_pk"
+                       class="btn-primary-sm">
+                        Voir la fiche
+                    </a>
                 </div>
 
             </div>
-        </div>
+
+        </article>
     }
 
 </div>

@@ -21,6 +21,3 @@
     }
 }
 
-// Remarques : 
-// - Region et regionid_fk sont nullable pour gérer les personnages sans région associée.
-// - Element et elementid_fk sont nullable car seul le Traveler n'a pas d'élément associé (il peut changer d'élément à volonté).

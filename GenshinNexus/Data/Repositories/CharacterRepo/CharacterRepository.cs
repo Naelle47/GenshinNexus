@@ -62,7 +62,7 @@ public class CharacterRepository : ICharacterRepository
                 c.Region = c.regionid_fk.HasValue ? region : null;
                 return c;
             },
-            new { ElementId = elementId, WeaponTypeId = weaponTypeId, RegionId = regionId },
+            new { ElementId = elementId, WeaponTypeId = weaponTypeId, RegionId = regionId, Rarity = Rarity },
             splitOn: "elementid_pk,weapontypeid_pk,regionid_pk"
         );
 
@@ -72,9 +72,9 @@ public class CharacterRepository : ICharacterRepository
 
     public async Task<IEnumerable<Element>> GetAllElementsAsync()
     {
-        const string sql = @"SELECT elementid_pk as ElementId,
+        const string sql = @"SELECT elementid_pk,
                            name,
-                           icon_url as IconUrl
+                           icon_url
                            FROM elements
                            ORDER BY name;";
         return await _db.QueryAsync<Element>(sql);
@@ -82,9 +82,9 @@ public class CharacterRepository : ICharacterRepository
 
     public async Task<IEnumerable<Region>> GetAllRegionsAsync()
     {
-        const string sql = @"SELECT regionid_pk as RegionId,
+        const string sql = @"SELECT regionid_pk,
                            name,
-                           icon_url as IconUrl
+                           icon_url
                            FROM regions
                            ORDER BY name;";
         return await _db.QueryAsync<Region>(sql);
@@ -92,9 +92,9 @@ public class CharacterRepository : ICharacterRepository
 
     public async Task<IEnumerable<WeaponType>> GetAllWeaponTypesAsync()
     {
-        const string sql = @"SELECT weapontypeid_pk as WeaponTypeId,
+        const string sql = @"SELECT weapontypeid_pk,
                            name,
-                           icon_url as IconUrl
+                           icon_url
                            FROM weapon_types
                            ORDER BY name;";
         return await _db.QueryAsync<WeaponType>(sql);

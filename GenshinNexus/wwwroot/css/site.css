@@ -486,7 +486,7 @@ body {
     margin-bottom: 1.25rem;
     padding: 0.35rem 0.6rem;
     background: rgba(15,23,42,0.04);
-    border-radius: 999px;
+    border-radius: 10px;
     border: 1px solid var(--border-subtle);
 }
 
@@ -538,5 +538,21 @@ body {
     width: 20px;
     height: 20px;
     object-fit: contain;
+}
+
+.filter-label {
+    width: 70px;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.rarity-chip {
+    width: auto;
+    padding: 0 10px;
+    font-weight: 600;
+}
+
+.rarity-chip {
+    color: var(--gold);
 }
 

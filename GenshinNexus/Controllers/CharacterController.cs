@@ -13,17 +13,18 @@ public class CharacterController : Controller
         _characterRepo = characterRepo;
     }
 
-    public async Task<IActionResult> Index(int? elementId, int? weaponTypeId, int? regionId, int? Rarity)
+    public async Task<IActionResult> Index(int? elementId, int? weaponTypeId, int? regionId, int? rarity)
     {
         var vm = new CharacterFiltersVM
         {
             ElementId = elementId,
             WeaponTypeId = weaponTypeId,
             RegionId = regionId,
+            Rarity = rarity,
             Elements = await _characterRepo.GetAllElementsAsync(),
             Regions = await _characterRepo.GetAllRegionsAsync(),
             WeaponTypes = await _characterRepo.GetAllWeaponTypesAsync(),
-            Characters = await _characterRepo.GetFilteredAsync(elementId, weaponTypeId, regionId, Rarity)
+            Characters = await _characterRepo.GetFilteredAsync(elementId, weaponTypeId, regionId, rarity)
         };
 
         return View(vm);

@@ -1,46 +1,57 @@
 ﻿@model GenshinNexus.Models.ViewModels.CharacterFiltersVM
 
-
-
-
-
-
 <section class="character-filters">
     <!-- Rareté -->
     <div class="filter-row">
+        <span class="filter-label">Quality</span>
         <div class="filter-chips">
             <a asp-action="Index"
-               asp-route-elementId="@Model.ElementId"
-               asp-route-weaponTypeId="@Model.WeaponTypeId"
-               asp-route-regionId="@Model.RegionId"
-               class="filter-chip @(Model.Rarity is null ? "active" : "")">
+                   asp-route-elementId="@Model.ElementId"
+                   asp-route-weaponTypeId="@Model.WeaponTypeId"
+                   asp-route-regionId="@Model.RegionId"
+                   asp-route-rarity=""
+                   class="filter-chip rarity-chip @(Model.Rarity is null ? "active" : "")">
                 *
+            </a>
+            <a asp-action="Index"
+                   asp-route-elementId="@Model.ElementId"
+                   asp-route-weaponTypeId="@Model.WeaponTypeId"
+                   asp-route-regionId="@Model.RegionId"
+                   asp-route-rarity="4"
+                   class="filter-chip rarity-chip @(Model.Rarity == 4 ? "active" : "")">
+                4★
+            </a>
+            <a asp-action="Index"
+                   asp-route-elementId="@Model.ElementId"
+                   asp-route-weaponTypeId="@Model.WeaponTypeId"
+                   asp-route-regionId="@Model.RegionId"
+                   asp-route-rarity="5"
+                   class="filter-chip rarity-chip @(Model.Rarity == 5 ? "active" : "")">
+                5★
             </a>
         </div>
     </div>
 
     <!-- Éléments -->
     <div class="filter-row">
+        <span class="filter-label">Element</span>
         <div class="filter-chips">
             <a asp-action="Index"
-               asp-route-elementId=""
-               asp-route-weaponTypeId="@Model.WeaponTypeId"
-               asp-route-regionId="@Model.RegionId"
-               class="filter-chip @(Model.ElementId is null ? "active" : "")">
+                   asp-route-elementId=""
+                   asp-route-weaponTypeId="@Model.WeaponTypeId"
+                   asp-route-regionId="@Model.RegionId"
+                   class="filter-chip @(Model.ElementId is null ? "active" : "")">
                 *
             </a>
 
             @foreach (var e in Model.Elements)
             {
-                <p>@e.name - @e.icon_url</p>
-
                 <a asp-action="Index"
-                   asp-route-elementId="@e.elementid_pk"
-                   asp-route-weaponTypeId="@Model.WeaponTypeId"
-                   asp-route-regionId="@Model.RegionId"
-                   class="filter-chip @(Model.ElementId == e.elementid_pk ? "active" : "")">
-
-                    <img src="@Url.Content("~"+ e.icon_url)"
+                       asp-route-elementId="@e.elementid_pk"
+                       asp-route-weaponTypeId="@Model.WeaponTypeId"
+                       asp-route-regionId="@Model.RegionId"
+                       class="filter-chip @(Model.ElementId == e.elementid_pk ? "active" : "")">
+                    <img src="@Url.Content("~" + e.icon_url)"
                          alt="@e.name"
                          class="filter-icon" />
                 </a>
@@ -50,23 +61,23 @@
 
     <!-- Types d’armes -->
     <div class="filter-row">
+        <span class="filter-label">Weapon</span>
         <div class="filter-chips">
             <a asp-action="Index"
-               asp-route-elementId="@Model.ElementId"
-               asp-route-weaponTypeId=""
-               asp-route-regionId="@Model.RegionId"
-               class="filter-chip @(Model.WeaponTypeId is null ? "active" : "")">
+                   asp-route-elementId="@Model.ElementId"
+                   asp-route-weaponTypeId=""
+                   asp-route-regionId="@Model.RegionId"
+                   class="filter-chip @(Model.WeaponTypeId is null ? "active" : "")">
                 *
             </a>
 
             @foreach (var w in Model.WeaponTypes)
             {
                 <a asp-action="Index"
-                   asp-route-elementId="@Model.ElementId"
-                   asp-route-weaponTypeId="@w.weapontypeid_pk"
-                   asp-route-regionId="@Model.RegionId"
-                   class="filter-chip @(Model.WeaponTypeId == w.weapontypeid_pk ? "active" : "")">
-
+                       asp-route-elementId="@Model.ElementId"
+                       asp-route-weaponTypeId="@w.weapontypeid_pk"
+                       asp-route-regionId="@Model.RegionId"
+                       class="filter-chip @(Model.WeaponTypeId == w.weapontypeid_pk ? "active" : "")">
                     <img src="@Url.Content("~" + w.icon_url)"
                          alt="@w.name"
                          class="filter-icon" />
@@ -75,23 +86,44 @@
         </div>
     </div>
 
+    <!-- Régions -->
+    <div class="filter-row">
+        <span class="filter-label">Region</span>
+        <div class="filter-chips">
+            <a asp-action="Index"
+                   asp-route-elementId="@Model.ElementId"
+                   asp-route-weaponTypeId="@Model.WeaponTypeId"
+                   asp-route-regionId=""
+                   class="filter-chip @(Model.RegionId is null ? "active" : "")">
+                *
+            </a>
+
+            @foreach (var r in Model.Regions)
+            {
+                <a asp-action="Index"
+                       asp-route-elementId="@Model.ElementId"
+                       asp-route-weaponTypeId="@Model.WeaponTypeId"
+                       asp-route-regionId="@r.regionid_pk"
+                       class="filter-chip @(Model.RegionId == r.regionid_pk ? "active" : "")">
+                    <img src="@Url.Content("~" + (!string.IsNullOrEmpty(r.icon_url) ? r.icon_url : "/images/regions/Emblem_Nation_Unknown_White.png"))"
+                         alt="@r.name"
+                         class="filter-icon" />
+                </a>
+            }
+        </div>
+    </div>
 </section>
 
 <div class="characters-grid">
-
-    
     @foreach (var item in Model.Characters)
     {
         <article class="character-card">
-
             <img src="@Url.Content("~" + item.icon_url)"
                  alt="@item.name"
                  class="character-card-image" />
 
             <div class="character-card-body">
-
                 <h2 class="character-name">@item.name</h2>
-
                 <div class="character-fields">
 
                     <div class="field-row">
@@ -101,41 +133,112 @@
 
                     <div class="field-row">
                         <span class="field-label">Élément</span>
-                        <span class="field-value">@((item.Element?.name) ?? "N/A")</span>
+                        <span class="field-value">
+                            @if (item.Element != null)
+                            {
+                                <img src="@Url.Content("~" + item.Element.icon_url)" class="filter-icon" alt="@item.Element.name" />
+                                @item.Element.name
+                            }
+                            else
+                            {
+                                @:N/A
+                            }
+                        </span>
                     </div>
 
                     <div class="field-row">
                         <span class="field-label">Arme</span>
-                        <span class="field-value">@((item.WeaponType?.name) ?? "N/A")</span>
+                        <span class="field-value">
+                            @if (item.WeaponType != null)
+                            {
+                                <img src="@Url.Content("~" + item.WeaponType.icon_url)" class="filter-icon" alt="@item.WeaponType.name" />
+                                @item.WeaponType.name
+                            }
+                            else
+                            {
+                                @:N/A
+                            }
+                        </span>
                     </div>
 
                     <div class="field-row">
                         <span class="field-label">Région</span>
-                        <span class="field-value">@((item.Region?.name) ?? "N/A")</span>
+                        <span class="field-value">
+                            @if (item.Region != null && !string.IsNullOrEmpty(item.Region.icon_url))
+                            {
+                                <img src="@Url.Content("~" + item.Region.icon_url)" class="filter-icon" alt="@item.Region.name" />
+                                @item.Region.name
+                            }
+                            else if (item.Region != null)
+                            {
+                                @item.Region.name
+                            }
+                            else
+                            {
+                                @:N/A
+                            }
+                        </span>
                     </div>
 
                     <div class="field-row">
                         <span class="field-label">Sortie</span>
                         <span class="field-value">
-                            @(item.release_date == default
-                                                    ? "N/A"
-                                                    : item.release_date.ToString("dd MMM yyyy"))
+                            @(item.release_date == default ? "N/A" : item.release_date.ToString("dd MMM yyyy"))
                         </span>
                     </div>
-
                 </div>
 
                 <div class="character-card-footer">
                     <a asp-action="Details"
-                       asp-route-id="@item.characterid_pk"
-                       class="btn-primary-sm">
+                           asp-route-id="@item.characterid_pk"
+                           class="btn-primary-sm">
                         Voir la fiche
                     </a>
                 </div>
-
             </div>
-
         </article>
     }
-
 </div>
+
+@section Scripts {
+    <script>
+        // Thème
+        const root = document.documentElement;
+        const toggleBtn = document.getElementById('theme-toggle');
+        const storedTheme = localStorage.getItem('theme');
+        if (storedTheme === 'dark') root.classList.add('theme-dark');
+        if (toggleBtn) {
+            toggleBtn.addEventListener('click', () => {
+                const isDark = root.classList.toggle('theme-dark');
+                localStorage.setItem('theme', isDark ? 'dark' : 'light');
+            });
+        }
+
+        // Modale À propos
+        const aboutModal = document.getElementById('about-modal');
+        const aboutOpen = document.getElementById('about-open');
+        const aboutClose = document.getElementById('about-close');
+
+        function openAbout() {
+            aboutModal.classList.add('show');
+            aboutModal.setAttribute('aria-hidden', 'false');
+        }
+        function closeAbout() {
+            aboutModal.classList.remove('show');
+            aboutModal.setAttribute('aria-hidden', 'true');
+        }
+
+        if (aboutOpen) aboutOpen.addEventListener('click', openAbout);
+        if (aboutClose) aboutClose.addEventListener('click', closeAbout);
+        if (aboutModal) {
+            aboutModal.addEventListener('click', (e) => {
+                if (e.target === aboutModal || e.target.classList.contains('modal-backdrop')) {
+                    closeAbout();
+                }
+            });
+        }
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeAbout();
+        });
+    </script>
+}
